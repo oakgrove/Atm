@@ -171,7 +171,6 @@
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="DAL\AtmDbContext.cs" />
     <Compile Include="DAL\AtmInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

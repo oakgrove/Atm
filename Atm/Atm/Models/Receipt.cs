@@ -10,5 +10,6 @@ namespace Atm.Models
         public int Id { get; set; }
         public double Length { get; set; } = 14;
         public bool Active { get; set; }
+
     }
 }

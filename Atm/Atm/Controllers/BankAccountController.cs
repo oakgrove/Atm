@@ -13,7 +13,7 @@ namespace Atm.Controllers
 {
     public class BankAccountController : Controller
     {
-        private AtmDbContext db = new AtmDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BankAccount
         public ActionResult Index()
