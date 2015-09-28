@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Atm.Models
 {
-    public class Atm
+    public class TheAtm
     {
         public int Id { get; set; }
         public List<Receipt> Receipts { get; set; }
