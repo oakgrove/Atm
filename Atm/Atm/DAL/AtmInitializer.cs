@@ -37,7 +37,13 @@ namespace Atm.DAL
             accounts.ForEach(a => context.Accounts.Add(a));
             context.SaveChanges();
 
-
+            var money = new List<Money>
+            {
+                new Money { Denominator = 100, RemainingPieces = 100 },
+                new Money { Denominator = 500, RemainingPieces = 200 }
+            };
+            money.ForEach(m => context.Money.Add(m));
+            context.SaveChanges();
 
             //var courses = new List<Course>
             //{
