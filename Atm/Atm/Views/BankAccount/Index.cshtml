@@ -45,11 +45,10 @@
                 @foreach (var transaction in item.Transactions)
                 {
 
-                    @transaction.TransactionTime @transaction.TransactionType  @transaction.Amount
-                    < br />
+                    @transaction.TransactionTime <&nbsp;> </&nbsp;> @transaction.TransactionType <&nbsp;> </&nbsp;>  @transaction.Amount
+                    
                 }
             </td>
         </tr>
+        </table>
     }
-
-</table>
