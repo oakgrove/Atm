@@ -5,16 +5,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using System.Web.Security;
 
 namespace Atm.Controllers
 {
     public class WithdrawController : Controller
     {
         // GET: Withdraw
-        public ActionResult Index()
-        {
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
         // GET: Withdraw/Create
         public ActionResult Create()
@@ -32,10 +33,15 @@ namespace Atm.Controllers
                 {
                     try
                     {
-                        BankAccount account = dataContext.Accounts.Where(a => a.User.Id == User.Identity.GetUserId() && a.WithdrawAccount == true).First();
-                        account.Balance -= model.Amount;
-                        dataContext.SaveChanges();
-                        trans.Commit();
+                        BankAccount account = dataContext.Accounts.Where(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name).First();
+
+                        //If account balance is enough
+                        if (account.Balance > model.Amount)
+                        {
+                            account.Balance -= model.Amount;
+                            dataContext.SaveChanges();
+                            trans.Commit();
+                        }
                     }
                     catch (Exception ex)
                     {
