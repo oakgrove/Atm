@@ -30,7 +30,6 @@ namespace Atm.Models
         public DbSet<BankAccount> Accounts { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<WithdrawViewModel> Withdraw { get; set; }
 
 
         public ApplicationDbContext()
