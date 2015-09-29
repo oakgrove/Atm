@@ -17,8 +17,8 @@ namespace Atm.DAL
             PasswordHasher passwordHasher = new PasswordHasher();
             var users = new List<ApplicationUser>
             {
-                new ApplicationUser { UserName = "321564863", Email = "321564863", PasswordHash = passwordHasher.HashPassword("1234")},
-                new ApplicationUser { UserName = "654684654", Email = "654684654", PasswordHash = passwordHasher.HashPassword("1234")}
+                new ApplicationUser { UserName = "321564863", Email = "321564863", SecurityStamp = Guid.NewGuid().ToString(), PasswordHash = passwordHasher.HashPassword("1234")},
+                new ApplicationUser { UserName = "654684654", Email = "654684654", SecurityStamp = Guid.NewGuid().ToString(), PasswordHash = passwordHasher.HashPassword("1234")}
             };
             foreach (var user in users)
             {
@@ -37,6 +37,16 @@ namespace Atm.DAL
             accounts.ForEach(a => context.Accounts.Add(a));
             context.SaveChanges();
 
+            var receipts = new List<Receipt>();
+            {
+                new Receipt { Length = 13.2, Active = false };
+                new Receipt { Length = 8.5, Active = false };
+                new Receipt { Length = 7.1, Active = false };
+                new Receipt { Length = 6.7, Active = true };
+            }
+            receipts.ForEach(r => context.Receipts.Add(r));
+            context.SaveChanges();
+                 
             var money = new List<Money>
             {
                 new Money { Denominator = 100, RemainingPieces = 100 },
@@ -89,21 +99,31 @@ namespace Atm.DAL
         //public double Amount { get; set; }
 
         //public BankAccount Account { get; set; }
-        //var courses = new List<Course>
-        //{
-        //    new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3, },
-        //    new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3, },
-        //    new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3, },
-        //    new Course {CourseID = 1045, Title = "Calculus",       Credits = 4, },
-        //    new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4, },
-        //    new Course {CourseID = 2021, Title = "Composition",    Credits = 3, },
-        //    new Course {CourseID = 2042, Title = "Literature",     Credits = 4, }
-        //};
-        //courses.ForEach(s => context.Courses.AddOrUpdate(p => p.Title, s));
-        //context.SaveChanges();
+            var clickLogs = new List<ClickLog>();
+            foreach (var user in users)
+            {
+
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", User = user });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 0, EventType = "Receipt", TurnOut = "Denied", User = user });
+            }
+            clickLogs.ForEach(c => context.ClickLogs.Add(c));
+            context.SaveChanges();
+
+            //var courses = new List<Course>
+            //{
+            //    new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3, },
+            //    new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3, },
+            //    new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3, },
+            //    new Course {CourseID = 1045, Title = "Calculus",       Credits = 4, },
+            //    new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4, },
+            //    new Course {CourseID = 2021, Title = "Composition",    Credits = 3, },
+            //    new Course {CourseID = 2042, Title = "Literature",     Credits = 4, }
+            //};
+            //courses.ForEach(s => context.Courses.AddOrUpdate(p => p.Title, s));
+            //context.SaveChanges();
 
 
 
+        }
     }
-}
 
