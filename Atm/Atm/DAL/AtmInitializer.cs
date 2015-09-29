@@ -16,8 +16,8 @@ namespace Atm.DAL
             PasswordHasher passwordHasher = new PasswordHasher();
             var users = new List<ApplicationUser>
             {
-                new ApplicationUser { UserName = "321564863", PasswordHash = passwordHasher.HashPassword("1234")},
-                new ApplicationUser { UserName = "654684654", PasswordHash = passwordHasher.HashPassword("1234")}
+                new ApplicationUser { UserName = "321564863", Email = "321564863", PasswordHash = passwordHasher.HashPassword("1234")},
+                new ApplicationUser { UserName = "654684654", Email = "654684654", PasswordHash = passwordHasher.HashPassword("1234")}
             };
             foreach (var user in users)
             {
