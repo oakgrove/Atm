@@ -18,7 +18,19 @@ namespace Atm.Controllers
         // GET: BankAccount
         public ActionResult Index()
         {
-            return View(db.Accounts.ToList());
+            using (ApplicationDbContext dataContext = new ApplicationDbContext())
+            {
+                List<BankAccount> accounts = dataContext.Accounts.Where(a => a.User.UserName == User.Identity.Name).ToList();
+
+                foreach (var account in accounts)
+                {
+                    account.Transactions = dataContext.Transactions.Where(t => t.Account.Id == account.Id).Take(5).ToList();
+                }
+                    
+                    //dataContext.Accounts.Where(a => a.User.UserName == User.Identity.Name);
+
+                return View(accounts);
+            }
         }
 
         // GET: BankAccount/Details/5

@@ -449,7 +449,7 @@ namespace Atm.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Create", "Withdraw");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
