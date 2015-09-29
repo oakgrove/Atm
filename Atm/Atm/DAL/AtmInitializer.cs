@@ -37,6 +37,16 @@ namespace Atm.DAL
             accounts.ForEach(a => context.Accounts.Add(a));
             context.SaveChanges();
 
+            var receipts = new List<Receipt>();
+            {
+                new Receipt { Length = 13.2, Active = false };
+                new Receipt { Length = 8.5, Active = false };
+                new Receipt { Length = 7.1, Active = false };
+                new Receipt { Length = 6.7, Active = true };
+            }
+            receipts.ForEach(r => context.Receipts.Add(r));
+            context.SaveChanges();
+                 
             var money = new List<Money>
             {
                 new Money { Denominator = 100, RemainingPieces = 100 },
