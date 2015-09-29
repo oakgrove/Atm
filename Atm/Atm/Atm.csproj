@@ -252,6 +252,7 @@
     <Content Include="Views\BankAccount\Details.cshtml" />
     <Content Include="Views\BankAccount\Edit.cshtml" />
     <Content Include="Views\BankAccount\Index.cshtml" />
+    <Content Include="Views\Withdraw\Create.cshtml" />
     <Content Include="Views\Withdraw\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
