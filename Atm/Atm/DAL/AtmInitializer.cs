@@ -44,25 +44,33 @@ namespace Atm.DAL
                 new Receipt { Length = 7.1, Active = false };
                 new Receipt { Length = 6.7, Active = true };
             }
-
+            receipts.ForEach(r => context.Receipts.Add(r));
+            context.SaveChanges();
                  
+            var money = new List<Money>
+            {
+                new Money { Denominator = 100, RemainingPieces = 100 },
+                new Money { Denominator = 500, RemainingPieces = 200 }
+            };
+            money.ForEach(m => context.Money.Add(m));
+            context.SaveChanges();
 
-        //var courses = new List<Course>
-        //{
-        //    new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3, },
-        //    new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3, },
-        //    new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3, },
-        //    new Course {CourseID = 1045, Title = "Calculus",       Credits = 4, },
-        //    new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4, },
-        //    new Course {CourseID = 2021, Title = "Composition",    Credits = 3, },
-        //    new Course {CourseID = 2042, Title = "Literature",     Credits = 4, }
-        //};
-        //courses.ForEach(s => context.Courses.AddOrUpdate(p => p.Title, s));
-        //context.SaveChanges();
+            //var courses = new List<Course>
+            //{
+            //    new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3, },
+            //    new Course {CourseID = 4022, Title = "Microeconomics", Credits = 3, },
+            //    new Course {CourseID = 4041, Title = "Macroeconomics", Credits = 3, },
+            //    new Course {CourseID = 1045, Title = "Calculus",       Credits = 4, },
+            //    new Course {CourseID = 3141, Title = "Trigonometry",   Credits = 4, },
+            //    new Course {CourseID = 2021, Title = "Composition",    Credits = 3, },
+            //    new Course {CourseID = 2042, Title = "Literature",     Credits = 4, }
+            //};
+            //courses.ForEach(s => context.Courses.AddOrUpdate(p => p.Title, s));
+            //context.SaveChanges();
 
 
 
-    }
+        }
     }
 
 }
