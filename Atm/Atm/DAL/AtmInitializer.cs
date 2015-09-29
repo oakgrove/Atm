@@ -59,8 +59,8 @@ namespace Atm.DAL
             foreach (var user in users)
             {
 
-                clickLogs.Add(new ClickLog { Time = new DateTime(2015, 9, 29, 10, 20, 30, 77), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", User = user });
-                clickLogs.Add(new ClickLog { Time = new DateTime(2015, 9, 29, 12, 28, 12, 16), Amount = 0, EventType = "Receipt", TurnOut = "Denied", User = user });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", User = user });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 0, EventType = "Receipt", TurnOut = "Denied", User = user });
             }
             clickLogs.ForEach(c => context.ClickLogs.Add(c));
             context.SaveChanges();
