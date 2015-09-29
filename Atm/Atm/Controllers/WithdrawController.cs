@@ -27,7 +27,15 @@ namespace Atm.Controllers
                     try
                     {
                         BankAccount account = dataContext.Accounts.Where(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name).First();
-                        double maxvalue = (account.Balance < 5000 ? (account.Balance - (account.Balance%100)) : 5000);
+                        double maxvalue = (account.Balance < 5000 ? (account.Balance - (account.Balance % 100)) : 5000);
+                        DateTime startdate = DateTime.Now.Date;
+                        //Checks if there are any withdrawals earlier today. If true: compares maxvalue to max ammount per day
+                        if ((dataContext.Transactions.Count(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate) != 0))
+                        {
+                            var withdraws = dataContext.Transactions.Where(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id).Sum(x => x.Amount);
+                            maxvalue = ((10000 - withdraws < maxvalue ? (10000 - maxvalue) : maxvalue));
+                        }
+                        ViewBag.SliderMaxValue = maxvalue;
                     }
                     catch (Exception ex)
                     {
@@ -38,7 +46,7 @@ namespace Atm.Controllers
                 }
             }
             //Where to add the slider????
-                return View();
+            return View();
         }
 
         // POST: Withdraw/Create
@@ -77,10 +85,10 @@ namespace Atm.Controllers
                     catch (Exception ex)
                     {
                         trans.Rollback();
-                        
-                        
+
+
                         ModelState.AddModelError("", ex);
-                        
+
                         return RedirectToAction("Create", "Withdraw");
 
                         //return View("error", ex);
