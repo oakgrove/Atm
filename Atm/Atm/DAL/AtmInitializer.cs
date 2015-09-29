@@ -37,12 +37,32 @@ namespace Atm.DAL
             accounts.ForEach(a => context.Accounts.Add(a));
             context.SaveChanges();
 
+            var receipts = new List<Receipt>();
+            {
+                new Receipt { Length = 13.2, Active = false };
+                new Receipt { Length = 8.5, Active = false };
+                new Receipt { Length = 7.1, Active = false };
+                new Receipt { Length = 6.7, Active = true };
+            }
+            receipts.ForEach(r => context.Receipts.Add(r));
+            context.SaveChanges();
+                 
             var money = new List<Money>
             {
                 new Money { Denominator = 100, RemainingPieces = 100 },
                 new Money { Denominator = 500, RemainingPieces = 200 }
             };
             money.ForEach(m => context.Money.Add(m));
+            context.SaveChanges();
+
+            var clickLogs = new List<ClickLog>();
+            foreach (var user in users)
+            {
+
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", User = user });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 0, EventType = "Receipt", TurnOut = "Denied", User = user });
+            }
+            clickLogs.ForEach(c => context.ClickLogs.Add(c));
             context.SaveChanges();
 
             //var courses = new List<Course>
