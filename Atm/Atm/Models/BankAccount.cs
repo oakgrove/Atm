@@ -18,6 +18,7 @@ namespace Atm.Models
         [Display(Name = "Saldo")]
         public double Balance { get; set; }
         public List<Transaction> Transactions { get; set; }
+        public bool WithdrawAccount { get; set; } = false;
 
         public ApplicationUser User { get; set; }
 
