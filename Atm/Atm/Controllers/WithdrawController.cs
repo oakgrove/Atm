@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Atm.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Atm.Controllers
 {
@@ -22,18 +24,29 @@ namespace Atm.Controllers
 
         // POST: Withdraw/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(WithdrawViewModel model)
         {
-            try
+            using (ApplicationDbContext dataContext = new ApplicationDbContext())
             {
-                // TODO: Add insert logic here
-                
-                return RedirectToAction("Index");
+                using (var trans = dataContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        BankAccount account = dataContext.Accounts.Where(a => a.User.Id == User.Identity.GetUserId() && a.WithdrawAccount == true).First();
+                        account.Balance -= model.Amount;
+                        dataContext.SaveChanges();
+                        trans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        Console.WriteLine(ex.InnerException);
+                    }
+
+                }
             }
-            catch
-            {
-                return View();
-            }
+            //Return to startpage and automatically log out
+            return RedirectToAction("Index", "Home");
         }
     }
 }
