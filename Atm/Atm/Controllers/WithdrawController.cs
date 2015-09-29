@@ -20,7 +20,25 @@ namespace Atm.Controllers
         // GET: Withdraw/Create
         public ActionResult Create()
         {
-            return View();
+            using (ApplicationDbContext dataContext = new ApplicationDbContext())
+            {
+                using (var trans = dataContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        BankAccount account = dataContext.Accounts.Where(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name).First();
+                        double maxvalue = (account.Balance < 5000 ? (account.Balance - (account.Balance%100)) : 5000);
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        return RedirectToAction("Create", "Withdraw");
+                    }
+
+                }
+            }
+            //Where to add the slider????
+                return View();
         }
 
         // POST: Withdraw/Create
@@ -35,23 +53,42 @@ namespace Atm.Controllers
                     {
                         BankAccount account = dataContext.Accounts.Where(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name).First();
 
-                        //If account balance is enough
-                        if (account.Balance > model.Amount)
+                        //If the ammount is in hundreds
+                        if (model.Amount % 100 == 0)
                         {
-                            account.Balance -= model.Amount;
-                            dataContext.SaveChanges();
-                            trans.Commit();
+                            //If account balance is enough
+                            if (account.Balance > model.Amount)
+                            {
+                                account.Balance -= model.Amount;
+                                dataContext.SaveChanges();
+                                trans.Commit();
+                            }
+                            else
+                            {
+                                throw new Exception("Det saknas pengar på kontot");
+                            }
                         }
+                        else
+                        {
+                            throw new Exception("Observera att lägsta valör är 100-lappar");
+                        }
+
                     }
                     catch (Exception ex)
                     {
                         trans.Rollback();
-                        Console.WriteLine(ex.InnerException);
+                        
+                        
+                        ModelState.AddModelError("", ex);
+                        
+                        return RedirectToAction("Create", "Withdraw");
+
+                        //return View("error", ex);
                     }
 
                 }
             }
-            //Return to startpage and automatically log out
+            //Return to startpage and (TODO: automatically log out)
             return RedirectToAction("Index", "Home");
         }
     }
