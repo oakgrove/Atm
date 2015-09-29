@@ -46,7 +46,7 @@ namespace Atm.DAL
             }
             receipts.ForEach(r => context.Receipts.Add(r));
             context.SaveChanges();
-                 
+
             var money = new List<Money>
             {
                 new Money { Denominator = 100, RemainingPieces = 100 },
@@ -86,19 +86,8 @@ namespace Atm.DAL
             }
             transactions.ForEach(t => context.Transactions.Add(t));
             context.SaveChanges();
-        }
 
 
-        //            [Display(Name = "Tid")]
-        //public DateTime TransactionTime { get; set; }
-        //[Display(Name = "Typ av transaktion")]
-        //public string TransactionType { get; set; }
-        //[Display(Name = "Saldo")]
-        //public double Balance { get; set; }
-        //[Display(Name = "Belopp")]
-        //public double Amount { get; set; }
-
-        //public BankAccount Account { get; set; }
             var clickLogs = new List<ClickLog>();
             foreach (var user in users)
             {
@@ -126,4 +115,5 @@ namespace Atm.DAL
 
         }
     }
+}
 
