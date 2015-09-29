@@ -25,6 +25,18 @@ namespace Atm.DAL
             }
             context.SaveChanges();
 
+            var accounts = new List<BankAccount>();
+
+            foreach (var user in users)
+            {
+                accounts.Add(new BankAccount { AccountNumber = 123516846, Name = "Sparkonto", User = user, Balance = 25000 });
+                accounts.Add(new BankAccount { AccountNumber = 351846843, Name = "Lönekonto", User = user, Balance = 10000 });
+            }
+            accounts.ForEach(a => context.Accounts.Add(a));
+            context.SaveChanges();
+
+
+
             //var courses = new List<Course>
             //{
             //    new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3, },
@@ -37,6 +49,8 @@ namespace Atm.DAL
             //};
             //courses.ForEach(s => context.Courses.AddOrUpdate(p => p.Title, s));
             //context.SaveChanges();
+
+
 
         }
     }
