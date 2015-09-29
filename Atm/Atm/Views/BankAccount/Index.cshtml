@@ -45,11 +45,13 @@
                 @foreach (var transaction in item.Transactions)
                 {
 
-                    @transaction.TransactionTime @transaction.TransactionType  @transaction.Amount
-                    < br />
+                   @Html.DisplayFor(modelItem => transaction.TransactionTime)  
+                   @Html.DisplayFor(modelItem => transaction.TransactionType)
+                   @Html.DisplayFor(modelItem => transaction.Amount)
+                   
                 }
             </td>
         </tr>
+       
     }
-
-</table>
+    </table>
