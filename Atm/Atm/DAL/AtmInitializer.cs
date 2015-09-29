@@ -45,6 +45,16 @@ namespace Atm.DAL
             money.ForEach(m => context.Money.Add(m));
             context.SaveChanges();
 
+            var clickLogs = new List<ClickLog>();
+            foreach (var user in users)
+            {
+
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, 9, 29, 10, 20, 30, 77), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", User = user });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, 9, 29, 12, 28, 12, 16), Amount = 0, EventType = "Receipt", TurnOut = "Denied", User = user });
+            }
+            clickLogs.ForEach(c => context.ClickLogs.Add(c));
+            context.SaveChanges();
+
             //var courses = new List<Course>
             //{
             //    new Course {CourseID = 1050, Title = "Chemistry",      Credits = 3, },
