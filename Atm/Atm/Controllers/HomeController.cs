@@ -17,23 +17,23 @@ namespace Atm.Controllers
                 {
 
                     //Receipt receipt = dataContext.Receipts.Where(r => r.Active).First();
-                    //if (receipt.Length>0.3)
+                    //if (receipt.Length > 0.3)
                     //{
                     //    ViewBag.ReceiptError = "Kvitto kan inte lämnas";
                     //}
 
 
-                    //int hundredBils = dataContext.Money.Count(p => p.Denominator == 100);
-                    //int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
+                    int hundredBils = dataContext.Money.Count(p => p.Denominator == 100);
+                    int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
 
-                    //if (hundredBils<1 && fiveHundredBills<1)
-                    //{
-                    //    ViewBag.OutOfBillsError = "Slut på sedlar";
-                    //}
-                    //else if (hundredBils<1)
-                    //{
-                    //    ViewBag.OutOfHundredBillsError = "Endast möjligt att ta ut 500-sedlar";
-                    //}
+                    if (hundredBils < 1 && fiveHundredBills < 1)
+                    {
+                        ViewBag.OutOfBillsError = "Slut på sedlar";
+                    }
+                    else if (hundredBils < 1)
+                    {
+                        ViewBag.OutOfHundredBillsError = "Endast möjligt att ta ut 500-sedlar";
+                    }
 
 
                     return View();
