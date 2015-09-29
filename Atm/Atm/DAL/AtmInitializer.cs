@@ -13,6 +13,7 @@ namespace Atm.DAL
     {
         protected override void Seed(ApplicationDbContext context)
         {
+            Random rnd = new Random();
             PasswordHasher passwordHasher = new PasswordHasher();
             var users = new List<ApplicationUser>
             {
@@ -25,12 +26,13 @@ namespace Atm.DAL
             }
             context.SaveChanges();
 
+
             var accounts = new List<BankAccount>();
 
             foreach (var user in users)
             {
-                accounts.Add(new BankAccount { AccountNumber = 123516846, Name = "Sparkonto", User = user, Balance = 25000 });
-                accounts.Add(new BankAccount { AccountNumber = 351846843, Name = "Lönekonto", User = user, Balance = 10000 });
+                accounts.Add(new BankAccount { AccountNumber = rnd.Next(152354853, 356845242), Name = "Sparkonto", User = user, Balance = rnd.Next(25000, 30000) });
+                accounts.Add(new BankAccount { AccountNumber = rnd.Next(152354853, 356845242), Name = "Lönekonto", User = user, Balance = rnd.Next(25000, 30000) });
             }
             accounts.ForEach(a => context.Accounts.Add(a));
             context.SaveChanges();
