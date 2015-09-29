@@ -16,11 +16,11 @@ namespace Atm.Controllers
                 using (var trans = dataContext.Database.BeginTransaction())
                 {
 
-                    //Receipt receipt = dataContext.Receipts.Where(r => r.Active).First();
-                    //if (receipt.Length > 0.3)
-                    //{
-                    //    ViewBag.ReceiptError = "Kvitto kan inte lämnas";
-                    //}
+                    Receipt receipt = dataContext.Receipts.Where(r => r.Active).First();
+                    if (receipt.Length < 0.3)
+                    {
+                        ViewBag.ReceiptError = "Kvitto kan inte lämnas";
+                    }
 
 
                     int hundredBils = dataContext.Money.Count(p => p.Denominator == 100);
