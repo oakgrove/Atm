@@ -4,8 +4,8 @@
     ViewBag.Title = "Log in";
 }
 
-<div class="row">
-    <div class="small-6 medium-3 columns small-centered">
+<div class="row" style="margin-top: 200px">
+    <div class="small-6 medium-3 columns small-centered text-center">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
@@ -14,19 +14,17 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                 <input type="hidden" name="Email" value="654684654" />
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                <h2>@Html.DisplayNameFor(m => m.Password)</h2>
+ 
+                    @Html.PasswordFor(m => m.Password, new { autofocus = "autofocus" })
+
+
+                    <input type="hidden" name="RememberMe" value=false />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="OK" class="button" />
+                        </div>
                     </div>
-                </div>
-                <input type="hidden" name="RememberMe" value=false />
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
-                    </div>
-                </div>
             }
         </section>
     </div>
