@@ -16,10 +16,12 @@ namespace Atm.Controllers
                 using (var trans = dataContext.Database.BeginTransaction())
                 {
 
+                    List<string> errorMessages = new List<string>();
+
                     Receipt receipt = dataContext.Receipts.Where(r => r.Active).First();
                     if (receipt.Length < 0.3)
                     {
-                        ViewBag.ReceiptError = "Kvitto kan inte lämnas";
+                        errorMessages.Add("Kvitto kan inte lämnas");
                     }
 
 
@@ -28,12 +30,21 @@ namespace Atm.Controllers
 
                     if (hundredBils < 1 && fiveHundredBills < 1)
                     {
-                        ViewBag.OutOfBillsError = "Slut på sedlar";
+                        errorMessages.Add("Slut på sedlar");
                     }
-                    else if (hundredBils < 1)
+                    else
                     {
-                        ViewBag.OutOfHundredBillsError = "Endast möjligt att ta ut 500-sedlar";
+                        if (hundredBils<1)
+                        {
+                            errorMessages.Add("Endast möjligt att ta ut 500-sedlar");
+                        }
+                        if (fiveHundredBills<1)
+                        {
+                            errorMessages.Add("Endast möjligt att ta ut 100-sedlar");
+                        }
                     }
+
+                    ViewBag.ErrorMessages = errorMessages;
 
 
                     return View();
