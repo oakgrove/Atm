@@ -14,7 +14,7 @@
 
             <h2>@Html.DisplayNameFor(m => m.Amount)</h2>
 
-            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", id = "amount", value = 0 } })
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", id = "amount", value = 0, min = 0, max = ViewBag.SliderMaxValue } })
             @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -35,35 +35,40 @@
                     <div class="button secondary" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px">@ViewBag.SliderMaxValue</div>
                 </div>
             </div>
-           
+
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.PrintReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.EditorFor(model => model.PrintReceipt)
-                @Html.ValidationMessageFor(model => model.PrintReceipt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmailReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.EmailReceipt)
-                    @Html.ValidationMessageFor(model => model.EmailReceipt, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="small-12 medium-6 columns small-centered text-center">
+            <div class="form-group">
+                @Html.LabelFor(model => model.PrintReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.PrintReceipt)
+                        @Html.ValidationMessageFor(model => model.PrintReceipt, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EmailReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.EmailReceipt)
+                        @Html.ValidationMessageFor(model => model.EmailReceipt, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="OK" class="button" />
                 </div>
             </div>
+        </div>
+    </div>
+
 
 }
 
