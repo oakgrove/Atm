@@ -44,6 +44,13 @@
     <div class="row" style="margin-top: 50px">
         <div class="small-12 medium-8 columns small-centered text-center">
             <h2>@Html.DisplayNameFor(m => m.Amount)</h2>
+        </div>
+    </div>
+    <div class="small-6 medium-3 columns small-centered" style="margin-left:auto ; margin-right:auto; padding-left:40px">
+            @ViewBag.ErrMsg
+    </div>
+    <div class="row">
+        <div class="small-12 medium-8 columns small-centered">
             <div class="row collapse">
                 <div class="small-1 columns">
                     <div class="button secondary" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px">0</div>
@@ -68,38 +75,38 @@
     </div>
 
 
-    <div class="row" style="margin-top: 100px">
+    <div class="row" style="margin-top: 70px">
         <div class="small-12 medium-4 columns small-centered text-center">
 
             <ul class="pricing-table" style="font-size: 15px">
                 <li class="title">Kvitto</li>
                 <li class="description">
-                    @if (@ViewBag.receiptLeft)
-                    {
+            @if (@ViewBag.receiptLeft)
+            {
                         <div class="row collapse" style="margin-top: 20px">
                             <div class="small-4 columns text-right">
-                                @Html.EditorFor(model => model.PrintReceipt)
-                            </div>
+                            @Html.EditorFor(model => model.PrintReceipt)
+                        </div>
                             <div class="small-8 columns text-left" style="padding-left: 20px">
                                 @Html.LabelFor(model => model.PrintReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
-                            </div>
-                        </div>
+                    </div>
+                </div>
 
-                    }
+            }
                     <div class="row collapse">
                         <div class="small-4 columns text-right">
-                            @Html.EditorFor(model => model.EmailReceipt)
-                        </div>
+                        @Html.EditorFor(model => model.EmailReceipt)
+                    </div>
                         <div class="small-8 columns text-left" style="padding-left: 20px">
                             @Html.LabelFor(model => model.EmailReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
-                        </div>
-                    </div>
+                </div>
+            </div>
                 </li>
             </ul>
 
             <div class="form-group" style="margin-top: 70px">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" name="ok" value="Bekräfta" class="button" />
+                    <input type="submit" name="ok" value="Bekräfta" class="button expand" />
                     @ViewBag.ErrMsg
                 </div>
             </div>
