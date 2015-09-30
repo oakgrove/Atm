@@ -19,7 +19,7 @@ namespace Atm.Controllers
         //}
 
         // GET: Withdraw/Create
-        public ActionResult Create()
+        public ActionResult Create(string errormsg)
         {
             using (ApplicationDbContext dataContext = new ApplicationDbContext())
             {
@@ -34,7 +34,7 @@ namespace Atm.Controllers
                         if ((dataContext.Transactions.Count(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id) != 0))
                         {
                             var withdraws = dataContext.Transactions.Where(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id).Sum(x => x.Amount);
-                            maxvalue = ((10000 - withdraws < maxvalue ? (10000 - maxvalue) : maxvalue));
+                            maxvalue = ((10000 - withdraws < maxvalue ? (10000 - withdraws) : maxvalue));
                         }
                         ViewBag.SliderMaxValue = maxvalue;
                     }
@@ -43,16 +43,15 @@ namespace Atm.Controllers
                         trans.Rollback();
                         return RedirectToAction("Create", "Withdraw");
                     }
-
                 }
             }
-            //Where to add the slider????
+            ViewBag.ErrMsg = errormsg;
             return View();
         }
 
         // POST: Withdraw/Create
         [HttpPost]
-        public ActionResult Create(WithdrawViewModel model)
+        public ActionResult Create(WithdrawViewModel model, string details, string ok)
         {
             using (ApplicationDbContext dataContext = new ApplicationDbContext())
             {
@@ -69,6 +68,7 @@ namespace Atm.Controllers
                             if (account.Balance > model.Amount)
                             {
                                 account.Balance -= model.Amount;
+                                dataContext.Transactions.Add(new Transaction { TransactionTime = DateTime.Now, Account = account, Balance = account.Balance, Amount = model.Amount, TransactionType = "Uttag" });
                                 dataContext.SaveChanges();
                                 trans.Commit();
 
@@ -86,7 +86,7 @@ namespace Atm.Controllers
                         }
                         else
                         {
-                            throw new Exception("Observera att lägsta valör är 100-lappar");
+                            throw new Exception("Observera att du endast kan ta ut pengar i hundratal");
                         }
 
                     }
@@ -97,10 +97,7 @@ namespace Atm.Controllers
                         dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = msg, Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
                         dataContext.SaveChanges();
                         ModelState.AddModelError("", ex);
-
-                        return RedirectToAction("Create", "Withdraw");
-
-                        //return View("error", ex);
+                        return RedirectToAction("Create", "Withdraw", new { errormsg = ex.Message });
                     }
                 }
             }
