@@ -18,7 +18,7 @@ namespace Atm.Controllers
 
                     List<string> errorMessages = new List<string>();
 
-                    Receipt receipt = dataContext.Receipts.Where(r => r.Active).First();
+                    Receipt receipt = dataContext.Receipts.First(r => r.Active);
                     if (receipt.Length < 0.3)
                     {
                         errorMessages.Add("Kvitto kan inte lämnas");
