@@ -43,7 +43,6 @@ namespace Atm.Controllers
                             errorMessages.Add("Endast möjligt att ta ut 100-sedlar");
                         }
                     }
-
                     ViewBag.ErrorMessages = errorMessages;
 
 
