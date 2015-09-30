@@ -4,18 +4,25 @@
     ViewBag.Title = "Uttag";
 }
 
+
+
+<div class="row" style="margin-top: 20px">
+    <div class="small-6 columns text-left">
+        <a href="@Url.Action("Index", "BankAccount")" class="button">Kontouppgifter</a>
+    </div>
+    <div class="small-6 columns text-right">
+        <form action="@Url.Action("LogOff", "Account")" method="post">
+            @Html.AntiForgeryToken()
+            <input type="submit" class="button alert" value="AVSLUTA" />
+        </form>
+    </div>
+</div>
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="row">
-        <div class="small-12 columns text-right" style="padding-top: 20px">
-            <a href="@Url.Action("Index", "Home")" class="button">
-                AVBRYT
-            </a>
-        </div>
-    </div>
 
-       
     <div class="row" style="margin-top: 5px">
         <div class="small-6 columns small-centered text-center">
 
@@ -96,7 +103,6 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" name="ok" value="Bekräfta" class="button" />
                     @ViewBag.ErrMsg
-                    <input type="submit" name="details" value="Kontodetaljer" class="button" />
                 </div>
             </div>
         </div>

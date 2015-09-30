@@ -3,11 +3,12 @@
 @{
     ViewBag.Title = "Logga in";
 }
-<div class="row">
-    <div class="small-12 columns text-right" style="padding-top: 20px">
-        <a href="@Url.Action("Index", "Home")" class="button">
-            AVBRYT
-        </a>
+<div class="row" style="margin-top: 20px">
+    <div class="small-12 columns text-right">
+        <form action="@Url.Action("LogOff", "Account")" method="post">
+            @Html.AntiForgeryToken()
+            <input type="submit" class="button alert" value="AVSLUTA" />
+        </form>
     </div>
 </div>
 
