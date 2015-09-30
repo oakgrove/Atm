@@ -37,6 +37,10 @@ namespace Atm.Controllers
                             maxvalue = ((10000 - withdraws < maxvalue ? (10000 - withdraws) : maxvalue));
                         }
                         ViewBag.SliderMaxValue = maxvalue;
+
+                        int hundredBills = dataContext.Money.Where(p => p.Denominator == 100).Sum(x => x.RemainingPieces);
+                        ViewBag.Step = (hundredBills==0) ? 500 : 100;
+                        
                     }
                     catch (Exception ex)
                     {

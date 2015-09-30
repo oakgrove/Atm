@@ -47,7 +47,7 @@ namespace Atm.Controllers
                         {
                             errorMessages.Add("Endast möjligt att ta ut 500-sedlar");
                         }
-                        if (fiveHundredBills < 1)
+                        else if (fiveHundredBills < 1)
                         {
                             errorMessages.Add("Endast möjligt att ta ut 100-sedlar");
                         }
