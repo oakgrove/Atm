@@ -9,8 +9,17 @@ namespace Atm.Controllers
 {
     public class HomeController : Controller
     {
+        public static bool AtmOutOfOrder = false;
+
+
         public ActionResult Index()
         {
+
+            if (AtmOutOfOrder)
+            {
+                return View("OutOfOrder");
+            }
+
             using (ApplicationDbContext dataContext = new ApplicationDbContext())
             {
                 using (var trans = dataContext.Database.BeginTransaction())
@@ -28,17 +37,17 @@ namespace Atm.Controllers
                     int hundredBills = dataContext.Money.Count(p => p.Denominator == 100);
                     int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
 
-                    if (hundredBills < 1 && fiveHundredBills < 1)
+                    if (hundredBills < 10 && fiveHundredBills < 8)
                     {
-                        errorMessages.Add("Slut på sedlar");
+                        return View("OutOfOrder");
                     }
                     else
                     {
-                        if (hundredBills<1)
+                        if (hundredBills < 1)
                         {
                             errorMessages.Add("Endast möjligt att ta ut 500-sedlar");
                         }
-                        if (fiveHundredBills<1)
+                        if (fiveHundredBills < 1)
                         {
                             errorMessages.Add("Endast möjligt att ta ut 100-sedlar");
                         }

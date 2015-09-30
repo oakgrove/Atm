@@ -4,47 +4,60 @@
     ViewBag.Title = "Uttag";
 }
 
-<div class="row" style="margin-top: 200px">
-    <div class="small-6 medium-6 columns small-centered">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row" style="margin-top: 200px">
+        <div class="small-6 medium-3 columns small-centered">
+
             <h2>@Html.DisplayNameFor(m => m.Amount)</h2>
 
             @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", id = "amount", value = 0 } })
             @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
-
+    <div class="row">
+        <div class="small-12 medium-8 columns small-centered">
             <div class="row collapse">
-                <div class="small-12 columns">
-                    <div class="range-slider" data-slider data-options="display_selector: #amount; initial: 0; step: 100; start: 0; end: 5000">
+                <div class="small-1 columns">
+                    <div class="button secondary" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px">0</div>
+                </div>
+                <div class="small-10 columns" style="padding-left: 20px">
+                    <div class="range-slider" data-slider data-options="display_selector: #amount; initial: 0; step: 100; start: 0; end: @ViewBag.SliderMaxValue">
                         <span class="range-slider-handle" role="slider" tabindex="0"></span>
                         <span class="range-slider-active-segment"></span>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.PrintReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.PrintReceipt)
-                        @Html.ValidationMessageFor(model => model.PrintReceipt, "", new { @class = "text-danger" })
-                    </div>
+                <div class="small-1 columns">
+                    <div class="button secondary" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px">@ViewBag.SliderMaxValue</div>
                 </div>
             </div>
+           
+        </div>
+    </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.EmailReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.EmailReceipt)
-                        @Html.ValidationMessageFor(model => model.EmailReceipt, "", new { @class = "text-danger" })
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PrintReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.PrintReceipt)
+                @Html.ValidationMessageFor(model => model.PrintReceipt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailReceipt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.EmailReceipt)
+                    @Html.ValidationMessageFor(model => model.EmailReceipt, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </div>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -52,11 +65,10 @@
                     @ViewBag.ErrMsg
                 </div>
             </div>
-        }
-    </div>
-    </div>
+
+}
 
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
