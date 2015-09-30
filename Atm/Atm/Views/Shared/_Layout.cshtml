@@ -17,7 +17,9 @@
     @RenderBody()
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/foundation")
+    
     @RenderSection("scripts", required: false)
     <script>
         $(document).foundation();
