@@ -27,7 +27,7 @@ namespace Atm.Controllers
                 {
                     try
                     {
-                        BankAccount account = dataContext.Accounts.Where(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name).First();
+                        BankAccount account = dataContext.Accounts.First(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name);
                         double maxvalue = (account.Balance < 5000 ? (account.Balance - (account.Balance % 100)) : 5000);
                         DateTime startdate = DateTime.Now.Date;
                         //Checks if there are any withdrawals earlier today. If true: compares maxvalue to max ammount per day
@@ -60,7 +60,7 @@ namespace Atm.Controllers
                 {
                     try
                     {
-                        BankAccount account = dataContext.Accounts.Where(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name).First();
+                        BankAccount account = dataContext.Accounts.First(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name);
 
                         //If the ammount is in hundreds
                         if (model.Amount % 100 == 0)

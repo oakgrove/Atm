@@ -61,12 +61,12 @@ namespace Atm.DAL
             {
                 DateTime date = DateTime.Now;
                 double bal = account.Balance;
-                string type = "";
 
                 for (int i = 0; i < 30; i++)
                 {
                     double amount = rnd.Next(1, 20 + 1) * 100;
 
+                    var type = "";
                     if (rnd.Next(0, 2) == 0)
                     {
                         type = "Uttag";

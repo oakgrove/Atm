@@ -8,7 +8,7 @@ namespace Atm.DAL
 {
     public class ClickLogRepository
     {
-        ApplicationDbContext context = new ApplicationDbContext();
+        readonly ApplicationDbContext context = new ApplicationDbContext();
 
         public void WriteToClickLog(ClickLog clickLogEntry)
         {
