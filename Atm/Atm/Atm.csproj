@@ -172,6 +172,7 @@
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ResultScreenController.cs" />
     <Compile Include="Controllers\WithdrawController.cs" />
     <Compile Include="DAL\AtmInitializer.cs" />
     <Compile Include="DAL\ClickLogRepository.cs" />
@@ -256,6 +257,7 @@
     <Content Include="Views\BankAccount\Index.cshtml" />
     <Content Include="Views\Withdraw\Create.cshtml" />
     <Content Include="Views\Withdraw\Index.cshtml" />
+    <Content Include="Views\ResultScreen\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

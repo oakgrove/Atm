@@ -77,7 +77,7 @@ namespace Atm.Controllers
                                     dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
                                     dataContext.SaveChanges();
                                 }
-                                
+
                             }
                             else
                             {
@@ -102,11 +102,10 @@ namespace Atm.Controllers
 
                         //return View("error", ex);
                     }
-
                 }
             }
             //Return to startpage and (TODO: automatically log out)
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Create", "ResultScreen", new {amount = model.Amount, print = model.PrintReceipt, mail = model.EmailReceipt});
         }
     }
 }
