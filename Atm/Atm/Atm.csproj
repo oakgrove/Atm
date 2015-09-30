@@ -258,6 +258,7 @@
     <Content Include="Views\BankAccount\Index.cshtml" />
     <Content Include="Views\Withdraw\Create.cshtml" />
     <Content Include="Views\Withdraw\Index.cshtml" />
+    <Content Include="Views\Home\OutOfOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
