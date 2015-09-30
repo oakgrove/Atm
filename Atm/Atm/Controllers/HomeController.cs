@@ -39,7 +39,7 @@ namespace Atm.Controllers
 
                     if (hundredBills < 1 && fiveHundredBills < 1)
                     {
-                        errorMessages.Add("Slut på sedlar");
+                        return View("OutOfOrder");
                     }
                     else
                     {
