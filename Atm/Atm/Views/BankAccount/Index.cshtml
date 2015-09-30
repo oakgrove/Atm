@@ -3,26 +3,19 @@
 @{
     ViewBag.Title = "Index";
 }
-<div class="row" style="float: left; position: absolute">
-    <div class="small-12 columns text-left" style="padding-top: 20px; float: left">
-        <a href="@Url.Action("Create", "Withdraw")" class="button">
-            TILLBAKA
-        </a>
+
+<div class="row" style="margin-top: 20px">
+    <div class="small-6 columns text-left">
+        <a href="@Url.Action("Create", "Withdraw")" class="button"><i class="fi-arrow-left"></i> BAKÅT</a>
+    </div>
+    <div class="small-6 columns text-right">
+        <form action="@Url.Action("LogOff", "Account")" method="post">
+            @Html.AntiForgeryToken()
+            <input type="submit" class="button alert" value="AVSLUTA" />
+        </form>
     </div>
 </div>
-
-<div class="row" style="float: right">
-    <div class="small-12 columns text-right" style="padding-top: 20px; margin-left: 20%; float: right">
-
-        <a href="@Url.Action("Index", "Home")" class="button">
-            AVBRYT
-        </a>
-
-    </div>
-</div>
-<br />
-<br/>
-<div class="row" style="margin-top: 40px">
+<div class="row" style="margin-top: 5px">
     <div class="small-6 columns small-centered text-center">
 
         <div>
@@ -65,19 +58,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Balance)
             </td>
-            <td>
+            @*<td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
+            </td>*@
             <td>
 
                 @foreach (var transaction in item.Transactions)
                 {
 
-                    @Html.DisplayFor(modelItem => transaction.TransactionTime)
-                    @Html.DisplayFor(modelItem => transaction.TransactionType)
-                    @Html.DisplayFor(modelItem => transaction.Amount)
+                    @Html.DisplayFor(modelItem => transaction.TransactionTime) <br />
+                    @Html.DisplayFor(modelItem => transaction.TransactionType)                   
+                    @Html.DisplayFor(modelItem => transaction.Amount)                    <br />
 
                 }
             </td>
