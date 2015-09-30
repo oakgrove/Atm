@@ -22,7 +22,7 @@ namespace Atm.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +34,9 @@ namespace Atm.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -63,6 +63,9 @@ namespace Atm.Controllers
 
         //
         // POST: /Account/Login
+
+
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -76,6 +79,7 @@ namespace Atm.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: true);
+            int count = 0;
             switch (result)
             {
                 case SignInStatus.Success:
@@ -86,10 +90,37 @@ namespace Atm.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    if (Session["count"] != null)
+                    {
+
+                        count = ((int)Session["count"]);
+
+                        //if (count == 0)
+                        //{
+                        //    ModelState.AddModelError("", "Fel pinkod, försök igen.");
+                        //}
+                        if (count == 1)
+                        {
+                            ModelState.AddModelError("", "Fel pinkod igen, ett försök kvar.");
+                        }
+                        if (count == 2)
+                        {
+                            ModelState.AddModelError("", "Fel pinkod igen, kontot låst!");
+                        }
+
+                        Session["count"] = ((int)Session["count"] != 0 ? (int)Session["count"] + 1 : 1);
+                    }
+                    else
+                    {
+                        Session["count"] = 0;
+                        ModelState.AddModelError("", "Fel pinkod, försök igen.");
+                        Session["count"] = 1;
+                    }
+
                     return View(model);
             }
         }
+
 
         //
         // GET: /Account/VerifyCode
@@ -120,7 +151,7 @@ namespace Atm.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -155,8 +186,8 @@ namespace Atm.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -458,7 +489,7 @@ namespace Atm.Controllers
                 : this(provider, redirectUri, null)
             {
             }
-            
+
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
                 LoginProvider = provider;
