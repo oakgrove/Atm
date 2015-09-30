@@ -36,7 +36,7 @@ namespace Atm.Controllers
                     int hundredBills = dataContext.Money.Where(p => p.Denominator == 100).Sum(x => x.RemainingPieces);
                     int fiveHundredBills = dataContext.Money.Where(p => p.Denominator == 500).Sum(x => x.RemainingPieces);
 
-                    if (hundredBills < 10 && fiveHundredBills < 8)
+                    if (hundredBills < 50 && fiveHundredBills < 10)
                     {
                         return View("OutOfOrder");
                     }
@@ -47,7 +47,7 @@ namespace Atm.Controllers
                         {
                             errorMessages.Add("Endast möjligt att ta ut 500-sedlar");
                         }
-                        if (fiveHundredBills < 1)
+                        else if (fiveHundredBills < 1)
                         {
                             errorMessages.Add("Endast möjligt att ta ut 100-sedlar");
                         }
