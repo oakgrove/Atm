@@ -35,6 +35,7 @@ namespace Atm.Controllers
 
 
                     int hundredBills = dataContext.Money.Count(p => p.Denominator == 100);
+                    
                     int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
 
                     if (hundredBills < 10 && fiveHundredBills < 8)
