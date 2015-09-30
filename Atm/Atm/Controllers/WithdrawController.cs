@@ -51,58 +51,65 @@ namespace Atm.Controllers
 
         // POST: Withdraw/Create
         [HttpPost]
-        public ActionResult Create(WithdrawViewModel model)
+        public ActionResult Create(WithdrawViewModel model, string details, string ok)
         {
-            using (ApplicationDbContext dataContext = new ApplicationDbContext())
+            if (string.IsNullOrWhiteSpace(details))
             {
-                using (var trans = dataContext.Database.BeginTransaction())
+                using (ApplicationDbContext dataContext = new ApplicationDbContext())
                 {
-                    try
+                    using (var trans = dataContext.Database.BeginTransaction())
                     {
-                        BankAccount account = dataContext.Accounts.First(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name);
-
-                        //If the ammount is in hundreds
-                        if (model.Amount % 100 == 0)
+                        try
                         {
-                            //If account balance is enough
-                            if (account.Balance > model.Amount)
+                            BankAccount account = dataContext.Accounts.First(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name);
+
+                            //If the ammount is in hundreds
+                            if (model.Amount % 100 == 0)
                             {
-                                account.Balance -= model.Amount;
-                                dataContext.Transactions.Add(new Transaction { TransactionTime = DateTime.Now, Account = account, Balance = account.Balance, Amount = model.Amount, TransactionType = "Uttag" });
-                                dataContext.SaveChanges();
-                                trans.Commit();
-
-                                using (ApplicationDbContext dContext = new ApplicationDbContext())
+                                //If account balance is enough
+                                if (account.Balance > model.Amount)
                                 {
-                                    dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                                    account.Balance -= model.Amount;
+                                    dataContext.Transactions.Add(new Transaction { TransactionTime = DateTime.Now, Account = account, Balance = account.Balance, Amount = model.Amount, TransactionType = "Uttag" });
                                     dataContext.SaveChanges();
-                                }
+                                    trans.Commit();
 
+                                    using (ApplicationDbContext dContext = new ApplicationDbContext())
+                                    {
+                                        dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                                        dataContext.SaveChanges();
+                                    }
+
+                                }
+                                else
+                                {
+                                    throw new Exception("Det saknas pengar på kontot");
+                                }
                             }
                             else
                             {
-                                throw new Exception("Det saknas pengar på kontot");
+                                throw new Exception("Observera att du endast kan ta ut pengar i hundratal");
                             }
-                        }
-                        else
-                        {
-                            throw new Exception("Observera att du endast kan ta ut pengar i hundratal");
-                        }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        trans.Rollback();
-                        string msg = (ex.Message == "Det saknas pengar på kontot" ? "Användaren försökte ta ut mer pengar än vad som fanns på kontot" : $"Användaren försökte ta ut {model.Amount} kr");
-                        dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = msg, Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
-                        dataContext.SaveChanges();
-                        ModelState.AddModelError("", ex);
-                        return RedirectToAction("Create", "Withdraw", new { errormsg = ex.Message });
+                        }
+                        catch (Exception ex)
+                        {
+                            trans.Rollback();
+                            string msg = (ex.Message == "Det saknas pengar på kontot" ? "Användaren försökte ta ut mer pengar än vad som fanns på kontot" : $"Användaren försökte ta ut {model.Amount} kr");
+                            dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = msg, Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                            dataContext.SaveChanges();
+                            ModelState.AddModelError("", ex);
+                            return RedirectToAction("Create", "Withdraw", new { errormsg = ex.Message });
+                        }
                     }
                 }
+                //Return to startpage and (TODO: automatically log out)
+                return RedirectToAction("Create", "ResultScreen", new { amount = model.Amount, print = model.PrintReceipt, mail = model.EmailReceipt });
             }
-            //Return to startpage and (TODO: automatically log out)
-            return RedirectToAction("Create", "ResultScreen", new {amount = model.Amount, print = model.PrintReceipt, mail = model.EmailReceipt});
+            else
+            {
+                return RedirectToAction("Index", "BankAccount");
+            }
         }
     }
 }
