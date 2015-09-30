@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Atm.Models;
+using System.Configuration;
 
 namespace Atm.Controllers
 {
@@ -106,6 +107,8 @@ namespace Atm.Controllers
                         if (count == 2)
                         {
                             ModelState.AddModelError("", "Fel pinkod igen, kontot låst!");
+                            Session["count"] = null;
+                            return RedirectToAction("Index", "Home");       
                         }
 
                         Session["count"] = ((int)Session["count"] != 0 ? (int)Session["count"] + 1 : 1);
@@ -120,6 +123,8 @@ namespace Atm.Controllers
                     return View(model);
             }
         }
+
+
 
 
         //

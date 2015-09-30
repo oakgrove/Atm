@@ -60,6 +60,7 @@ namespace Atm
                 RequireUppercase = false,
             };
 
+
             // Configure user lockout defaults
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(60);
