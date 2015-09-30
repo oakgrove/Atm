@@ -51,7 +51,7 @@ namespace Atm.Controllers
 
         // POST: Withdraw/Create
         [HttpPost]
-        public ActionResult Create(WithdrawViewModel model)
+        public ActionResult Create(WithdrawViewModel model, string details, string ok)
         {
             using (ApplicationDbContext dataContext = new ApplicationDbContext())
             {
