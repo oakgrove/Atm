@@ -40,7 +40,7 @@ namespace Atm.Controllers
             {
                 // TODO: Add insert logic here
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("LogOff", "Account");
             }
             catch
             {
