@@ -72,35 +72,40 @@ namespace Atm.Controllers
                         try
                         {
                             BankAccount account = dataContext.Accounts.First(a => a.WithdrawAccount == true && a.User.UserName == User.Identity.Name);
-
-                            //If the ammount is in hundreds
-                            if (model.Amount % 100 == 0)
+                            if (model.Amount == 0)
                             {
-                                //If account balance is enough
-                                if (account.Balance > model.Amount)
-                                {
-                                    account.Balance -= model.Amount;
-                                    dataContext.Transactions.Add(new Transaction { TransactionTime = DateTime.Now, Account = account, Balance = account.Balance, Amount = model.Amount, TransactionType = "Uttag" });
-                                    dataContext.SaveChanges();
-                                    trans.Commit();
-
-                                    using (ApplicationDbContext dContext = new ApplicationDbContext())
-                                    {
-                                        dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
-                                        dataContext.SaveChanges();
-                                    }
-
-                                }
-                                else
-                                {
-                                    throw new Exception("Det saknas pengar på kontot");
-                                }
+                                throw new Exception("Det är inte möjligt att ta ut 0 kr.");
                             }
                             else
                             {
-                                throw new Exception("Observera att du endast kan ta ut pengar i hundratal");
-                            }
+                                //If the ammount is in hundreds
+                                if (model.Amount % 100 == 0)
+                                {
+                                    //If account balance is enough
+                                    if (account.Balance > model.Amount)
+                                    {
+                                        account.Balance -= model.Amount;
+                                        dataContext.Transactions.Add(new Transaction { TransactionTime = DateTime.Now, Account = account, Balance = account.Balance, Amount = model.Amount, TransactionType = "Uttag" });
+                                        dataContext.SaveChanges();
+                                        trans.Commit();
 
+                                        using (ApplicationDbContext dContext = new ApplicationDbContext())
+                                        {
+                                            dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                                            dataContext.SaveChanges();
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Det saknas pengar på kontot");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Observera att du endast kan ta ut pengar i hundratal");
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {

@@ -15,10 +15,9 @@
         </div>
     </div>
 
-       
+
     <div class="row" style="margin-top: 5px">
         <div class="small-6 columns small-centered text-center">
-
             <div>
                 <div style="position: absolute; right: 0px; top: -20px; transform: rotate(-30deg); -webkit-transform: rotate(-30deg)">
                     <i class="fi-dollar-bill" style="font-size: 70px"></i>
@@ -43,7 +42,9 @@
             @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
         </div>
     </div>
-
+        <div class="small-6 medium-3 columns small-centered" style="margin-left:auto ; margin-right:auto; padding-left:40px">
+            @ViewBag.ErrMsg
+    </div>
     <div class="row">
         <div class="small-12 medium-8 columns small-centered">
             <div class="row collapse">
@@ -95,7 +96,7 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" name="ok" value="Bekräfta" class="button" />
-                    @ViewBag.ErrMsg
+
                     <input type="submit" name="details" value="Kontodetaljer" class="button" />
                 </div>
             </div>
