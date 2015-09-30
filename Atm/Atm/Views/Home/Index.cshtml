@@ -2,11 +2,18 @@
     ViewBag.Title = "Välkommen!";
 }
 
-<div class="row" style="margin-top: 200px">
+<div class="row" style="margin-top: 100px">
+    @foreach (var error in ViewBag.ErrorMessages)
+    {
+        <h4>@error</h4>
+    }
     <div class="small-12 medium-6 columns small-centered text-center">
-        <p>
-            Välkommen till Bankomaten!
-        </p>
+            Välkommen till
+        <div>
+            <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: 70px">Bankomaten</h1>
+            
+        </div>
+
         <a href="@Url.Action("Login", "Account")" class="button">Mata in kortet!</a>
     </div>
 </div>

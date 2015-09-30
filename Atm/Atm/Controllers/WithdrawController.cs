@@ -30,7 +30,7 @@ namespace Atm.Controllers
                         double maxvalue = (account.Balance < 5000 ? (account.Balance - (account.Balance % 100)) : 5000);
                         DateTime startdate = DateTime.Now.Date;
                         //Checks if there are any withdrawals earlier today. If true: compares maxvalue to max ammount per day
-                        if ((dataContext.Transactions.Count(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate) != 0))
+                        if ((dataContext.Transactions.Count(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id) != 0))
                         {
                             var withdraws = dataContext.Transactions.Where(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id).Sum(x => x.Amount);
                             maxvalue = ((10000 - withdraws < maxvalue ? (10000 - maxvalue) : maxvalue));
@@ -70,6 +70,10 @@ namespace Atm.Controllers
                                 account.Balance -= model.Amount;
                                 dataContext.SaveChanges();
                                 trans.Commit();
+
+                                dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                                dataContext.SaveChanges();
+                                trans.Commit();
                             }
                             else
                             {
@@ -85,8 +89,8 @@ namespace Atm.Controllers
                     catch (Exception ex)
                     {
                         trans.Rollback();
-
-
+                        dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = ex.Message, Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                        dataContext.SaveChanges();
                         ModelState.AddModelError("", ex);
 
                         return RedirectToAction("Create", "Withdraw");

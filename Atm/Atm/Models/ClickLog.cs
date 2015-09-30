@@ -18,6 +18,6 @@ namespace Atm.Models
         [Display(Name = "Typ av transaktion")]
         public string EventType { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public string UserName { get; set; }
     }
 }
