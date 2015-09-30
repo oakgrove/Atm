@@ -5,15 +5,20 @@
 }
 
 <div class="row" style="margin-top: 20px">
+
     <div class="small-6 columns text-left">
         <a href="@Url.Action("Create", "Withdraw")" class="button"><i class="fi-arrow-left"></i> BAKÅT</a>
     </div>
+
+
+
     <div class="small-6 columns text-right">
         <form action="@Url.Action("LogOff", "Account")" method="post">
             @Html.AntiForgeryToken()
             <input type="submit" class="button alert" value="AVSLUTA" />
         </form>
     </div>
+
 </div>
 <div class="row" style="margin-top: 5px">
     <div class="small-6 columns small-centered text-center">
@@ -78,3 +83,6 @@
 
     }
 </table>
+<div class="small-6 columns text-center">
+    <a href="@Url.Action("Index", "BankAccount")" class="button"> Skriv Ut Senaste 25 Transaktionerna</a>
+</div>

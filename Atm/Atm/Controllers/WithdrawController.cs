@@ -46,7 +46,6 @@ namespace Atm.Controllers
                         if (receipt.Length < 0.3)
                             receiptLeft = false;
                         ViewBag.receiptLeft = receiptLeft;
-
                     }
                     catch (Exception ex)
                     {
