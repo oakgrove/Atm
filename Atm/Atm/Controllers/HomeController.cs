@@ -18,23 +18,23 @@ namespace Atm.Controllers
 
                     List<string> errorMessages = new List<string>();
 
-                    Receipt receipt = dataContext.Receipts.Where(r => r.Active).First();
+                    Receipt receipt = dataContext.Receipts.First(r => r.Active);
                     if (receipt.Length < 0.3)
                     {
                         errorMessages.Add("Kvitto kan inte lämnas");
                     }
 
 
-                    int hundredBils = dataContext.Money.Count(p => p.Denominator == 100);
+                    int hundredBills = dataContext.Money.Count(p => p.Denominator == 100);
                     int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
 
-                    if (hundredBils < 1 && fiveHundredBills < 1)
+                    if (hundredBills < 1 && fiveHundredBills < 1)
                     {
                         errorMessages.Add("Slut på sedlar");
                     }
                     else
                     {
-                        if (hundredBils<1)
+                        if (hundredBills<1)
                         {
                             errorMessages.Add("Endast möjligt att ta ut 500-sedlar");
                         }

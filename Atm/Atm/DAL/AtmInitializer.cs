@@ -61,12 +61,12 @@ namespace Atm.DAL
             {
                 DateTime date = DateTime.Now;
                 double bal = account.Balance;
-                string type = "";
 
                 for (int i = 0; i < 30; i++)
                 {
                     double amount = rnd.Next(1, 20 + 1) * 100;
 
+                    var type = "";
                     if (rnd.Next(0, 2) == 0)
                     {
                         type = "Uttag";
@@ -92,8 +92,8 @@ namespace Atm.DAL
             foreach (var user in users)
             {
 
-                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", User = user });
-                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 0, EventType = "Receipt", TurnOut = "Denied", User = user });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 1000, EventType = "Withdrawl", TurnOut = "Succeded", UserName = user.UserName });
+                clickLogs.Add(new ClickLog { Time = new DateTime(2015, rnd.Next(1, 9), rnd.Next(1, 28), rnd.Next(1, 12), rnd.Next(1, 59), rnd.Next(1, 59), rnd.Next(1, 999)), Amount = 0, EventType = "Receipt", TurnOut = "Denied", UserName = user.UserName });
             }
             clickLogs.ForEach(c => context.ClickLogs.Add(c));
             context.SaveChanges();

@@ -75,7 +75,7 @@ namespace Atm.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -458,7 +458,7 @@ namespace Atm.Controllers
                 : this(provider, redirectUri, null)
             {
             }
-
+            
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
                 LoginProvider = provider;
