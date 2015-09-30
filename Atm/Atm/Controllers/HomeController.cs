@@ -11,6 +11,8 @@ namespace Atm.Controllers
     {
         public ActionResult Index()
         {
+
+
             using (ApplicationDbContext dataContext = new ApplicationDbContext())
             {
                 using (var trans = dataContext.Database.BeginTransaction())
