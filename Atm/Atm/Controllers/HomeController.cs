@@ -33,14 +33,14 @@ namespace Atm.Controllers
                         errorMessages.Add("Kvitto kan inte lämnas");
                     }
 
-
-                    int hundredBills = dataContext.Money.Count(p => p.Denominator == 100);
-                    int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
+                    int hundredBills = dataContext.Money.Where(p => p.Denominator == 100).Sum(x => x.RemainingPieces);
+                    int fiveHundredBills = dataContext.Money.Where(p => p.Denominator == 500).Sum(x => x.RemainingPieces);
 
                     if (hundredBills < 10 && fiveHundredBills < 8)
                     {
                         return View("OutOfOrder");
                     }
+
                     else
                     {
                         if (hundredBills < 1)

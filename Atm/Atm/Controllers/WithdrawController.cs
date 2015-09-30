@@ -34,7 +34,7 @@ namespace Atm.Controllers
                         if ((dataContext.Transactions.Count(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id) != 0))
                         {
                             var withdraws = dataContext.Transactions.Where(t => t.TransactionType == "Uttag" && t.TransactionTime > startdate && t.Account.Id == account.Id).Sum(x => x.Amount);
-                            maxvalue = ((10000 - withdraws < maxvalue ? (10000 - maxvalue) : maxvalue));
+                            maxvalue = ((10000 - withdraws < maxvalue ? (10000 - withdraws) : maxvalue));
                         }
                         ViewBag.SliderMaxValue = maxvalue;
                     }
