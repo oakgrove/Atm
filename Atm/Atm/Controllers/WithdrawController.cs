@@ -40,7 +40,13 @@ namespace Atm.Controllers
 
                         int hundredBills = dataContext.Money.Where(p => p.Denominator == 100).Sum(x => x.RemainingPieces);
                         ViewBag.Step = (hundredBills==0) ? 500 : 100;
-                        
+
+                        bool receiptLeft = true;
+                        Receipt receipt = dataContext.Receipts.First(r => r.Active);
+                        if (receipt.Length < 0.3)
+                            receiptLeft = false;
+                        ViewBag.receiptLeft = receiptLeft;
+
                     }
                     catch (Exception ex)
                     {
