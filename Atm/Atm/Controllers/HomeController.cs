@@ -25,16 +25,16 @@ namespace Atm.Controllers
                     }
 
 
-                    int hundredBils = dataContext.Money.Count(p => p.Denominator == 100);
+                    int hundredBills = dataContext.Money.Count(p => p.Denominator == 100);
                     int fiveHundredBills = dataContext.Money.Count(p => p.Denominator == 500);
 
-                    if (hundredBils < 1 && fiveHundredBills < 1)
+                    if (hundredBills < 1 && fiveHundredBills < 1)
                     {
                         errorMessages.Add("Slut på sedlar");
                     }
                     else
                     {
-                        if (hundredBils<1)
+                        if (hundredBills<1)
                         {
                             errorMessages.Add("Endast möjligt att ta ut 500-sedlar");
                         }
