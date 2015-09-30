@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Web.Security;
+using Atm.DAL;
 
 namespace Atm.Controllers
 {
@@ -71,9 +72,12 @@ namespace Atm.Controllers
                                 dataContext.SaveChanges();
                                 trans.Commit();
 
-                                dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
-                                dataContext.SaveChanges();
-                                trans.Commit();
+                                using (ApplicationDbContext dContext = new ApplicationDbContext())
+                                {
+                                    dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                                    dataContext.SaveChanges();
+                                }
+                                
                             }
                             else
                             {
@@ -89,7 +93,8 @@ namespace Atm.Controllers
                     catch (Exception ex)
                     {
                         trans.Rollback();
-                        dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = ex.Message, Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
+                        string msg = (ex.Message == "Det saknas pengar på kontot" ? "Användaren försökte ta ut mer pengar än vad som fanns på kontot" : $"Användaren försökte ta ut {model.Amount} kr");
+                        dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = msg, Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
                         dataContext.SaveChanges();
                         ModelState.AddModelError("", ex);
 
