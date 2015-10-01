@@ -12,12 +12,6 @@ namespace Atm.Controllers
 {
     public class WithdrawController : Controller
     {
-        // GET: Withdraw
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
         // GET: Withdraw/Create
         public ActionResult Create(string errormsg)
         {
@@ -77,19 +71,23 @@ namespace Atm.Controllers
                             }
                             else
                             {
-                                //If the ammount is in hundreds
                                 if (model.Amount % 100 == 0)
                                 {
-                                    //If account balance is enough
                                     if (account.Balance > model.Amount)
                                     {
                                         account.Balance -= model.Amount;
                                         dataContext.Transactions.Add(new Transaction { TransactionTime = DateTime.Now, Account = account, Balance = account.Balance, Amount = model.Amount, TransactionType = "Uttag" });
                                         dataContext.SaveChanges();
                                         trans.Commit();
+                                        Session["fivehundreds"] = Convert.ToInt32((model.Amount - (model.Amount % 500)) / 500);
+                                        Session["hundreds"] = Convert.ToInt32((model.Amount - ((int)Session["fivehundreds"] * 500)) / 100);
 
                                         using (ApplicationDbContext dContext = new ApplicationDbContext())
                                         {
+                                            Money hundredbills = dataContext.Money.Where(m => m.Denominator == 100).First();
+                                            Money fivehundredbills = dataContext.Money.Where(m => m.Denominator == 500).First();
+                                            hundredbills.RemainingPieces -= (int)Session["hundreds"];
+                                            fivehundredbills.RemainingPieces -= (int)Session["fivehundreds"];
                                             dataContext.ClickLogs.Add(new ClickLog { Time = DateTime.Now, TurnOut = "Lyckades", Amount = model.Amount, EventType = "Uttag", UserName = User.Identity.Name });
                                             dataContext.SaveChanges();
                                         }
@@ -117,8 +115,7 @@ namespace Atm.Controllers
                         }
                     }
                 }
-                //Return to startpage and (TODO: automatically log out)
-                return RedirectToAction("Create", "ResultScreen", new { amount = model.Amount, print = model.PrintReceipt, mail = model.EmailReceipt });
+                return RedirectToAction("Create", "ResultScreen", new { fivehundreds = (int)Session["fivehundreds"], hundreds = (int)Session["hundreds"], print = model.PrintReceipt, mail = model.EmailReceipt });
             }
             else
             {
