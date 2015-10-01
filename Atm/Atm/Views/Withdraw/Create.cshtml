@@ -2,9 +2,14 @@
 
 @{
     ViewBag.Title = "Uttag";
-}
+}  
 
-
+<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h2 id="modalTitle">Awesome. I have it.</h2>
+    <p class="lead">Your couch.  It is mine.</p>
+    <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
 
 <div class="row" style="margin-top: 20px">
     <div class="small-6 columns text-left">
@@ -17,7 +22,6 @@
         </form>
     </div>
 </div>
-
 
 @using (Html.BeginForm())
 {
@@ -47,6 +51,13 @@
         </div>
     </div>
  
+   
+    <div class="row">
+        <div class="small-6 medium-3 columns small-centered">
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "amount", value = 0, min = 0, max = ViewBag.SliderMaxValue } })
+            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
     <div class="row">
         <div class="small-12 medium-8 columns small-centered">
             <div class="row collapse">
@@ -65,13 +76,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="small-6 medium-3 columns small-centered">
-            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "amount", value = 0, min = 0, max = ViewBag.SliderMaxValue } })
-            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
 
     <div class="row" style="margin-top: 70px">
         <div class="small-12 medium-4 columns small-centered text-center">
