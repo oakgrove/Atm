@@ -4,6 +4,67 @@
     ViewBag.Title = "Index";
 }
 
+@foreach (var account in Model)
+{
+    <div id="myModal@(account.Name)Transactions" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h3>@account.Name</h3>
+        <p>Utskriftsdatum: @(DateTime.Now.ToString("yyyy-MM-dd"))</p>
+        <div class="row collapse">
+            <div class="small-12 columns">
+                <h5>Transaktioner:</h5>
+            </div>
+        </div>
+        <div class="row collapse">
+            <div class="small-4 columns">
+                Tid
+            </div>
+            <div class="small-4 columns">
+                Typ
+            </div>
+            <div class="small-4 columns text-right">
+                Belopp
+            </div>
+        </div>
+        @foreach (var transaction in account.Transactions.Take(25))
+        {
+            <div class="row collapse">
+                <div class="small-4 columns">
+                    @transaction.TransactionTime
+                </div>
+                <div class="small-4 columns">
+                    @transaction.TransactionType
+                </div>
+                <div class="small-4 columns text-right">
+                    @transaction.Amount.ToString("### ###") SEK
+                </div>
+            </div>
+        }
+        <div class="row collapse">
+            <div class="small-4 columns">
+                &nbsp;
+            </div>
+        </div>
+        <a class="close-reveal-modal button" style="font-size: 20px; color: white; top: 30px" aria-label="Close">Tag utskrift</a>
+    </div>
+
+    <div id="myModal@(account.Name)Balance" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h3>@account.Name</h3>
+        <p>Utskriftsdatum: @(DateTime.Now.ToString("yyyy-MM-dd"))</p>
+        <div class="row collapse">
+            <div class="small-12 columns">
+                <h5>Saldo: @account.Balance.ToString("### ###") SEK</h5>
+            </div>
+        </div>
+        <div class="row collapse">
+            <div class="small-4 columns">
+                &nbsp;
+            </div>
+        </div>
+        <a class="close-reveal-modal button" style="font-size: 20px; color: white; top: 30px" aria-label="Close">Tag utskrift</a>
+    </div>
+}
+
+
 <div class="row" style="margin-top: 20px">
 
     <div class="small-6 columns text-left">
@@ -36,53 +97,76 @@
         </div>
     </div>
 </div>
+<div class="row" style="margin-top: 30px">
+    <div class="small-8 columns small-centered">
+        <h4>&nbsp;&nbsp;&nbsp;Här ser du dina bankkonton:</h4>
+    </div>
 
-<table class="table" style="margin-left: auto; margin-right:auto">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Balance)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+</div>
+<div class="row">
+    <div class="small-8 columns small-centered">
+        <ul class="accordion" data-accordion>
+            @{int i = 1;}
+            @foreach (var account in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Balance)
-            </td>
-            @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>*@
-            <td>
-
-                @foreach (var transaction in item.Transactions)
+                <li class="accordion-navigation">
+                    <a href="#panel@(i)a">
+                        <div class="row collapse">
+                            <div class="small-6 columns">
+                                <span style="font-size: 25px"><b>@account.Name</b></span><br />
+                                Kontonummer: @account.AccountNumber
+                            </div>
+                            <div class="small-6 columns text-right">
+                                &nbsp;<br />
+                                Saldo: @account.Balance.ToString("### ###") SEK
+                            </div>
+                        </div>
+                    </a>
+                    <div id="panel@(i)a" class="content @(account.WithdrawAccount ? "active" : "")">
+                        <div class="row collapse">
+                            <div class="small-12 columns text-right">
+                                <a href="#" data-reveal-id="myModal@(account.Name)Balance" class="button">Skriv ut saldo</a>
+                            </div>
+                        </div>
+                        <div class="row collapse">
+                            <div class="small-12 columns">
+                                <h5>Transaktioner:</h5>
+                            </div>
+                        </div>
+                        <div class="row collapse">
+                            <div class="small-4 columns">
+                                Tid
+                            </div>
+                            <div class="small-4 columns">
+                                Typ
+                            </div>
+                            <div class="small-4 columns text-right">
+                                Belopp
+                            </div>
+                        </div>
+                        @foreach (var transaction in account.Transactions.Take(5))
                 {
-
-                    @Html.DisplayFor(modelItem => transaction.TransactionTime) <br />
-                    @Html.DisplayFor(modelItem => transaction.TransactionType)                   
-                    @Html.DisplayFor(modelItem => transaction.Amount)                    <br />
-
+                            <div class="row collapse">
+                                <div class="small-4 columns">
+                                    @transaction.TransactionTime
+                                </div>
+                                <div class="small-4 columns">
+                                    @transaction.TransactionType
+                                </div>
+                                <div class="small-4 columns text-right">
+                                    @transaction.Amount.ToString("### ###") SEK
+                                </div>
+                            </div>
                 }
-            </td>
-        </tr>
-
+                        <div class="row collapse" style="margin-top: 10px">
+                            <div class="small-12 columns text-right">
+                                <a href="#" data-reveal-id="myModal@(account.Name)Transactions" class="button">Skriv ut transaktioner</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                i++;
     }
-</table>
-<div class="small-6 columns text-center">
-    <a href="@Url.Action("Index", "BankAccount")" class="button"> Skriv Ut Senaste 25 Transaktionerna</a>
+        </ul>
+    </div>
 </div>

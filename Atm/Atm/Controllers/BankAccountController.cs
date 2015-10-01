@@ -24,7 +24,7 @@ namespace Atm.Controllers
 
                 foreach (var account in accounts)
                 {
-                    account.Transactions = dataContext.Transactions.Where(t => t.Account.Id == account.Id).Take(5).ToList();
+                    account.Transactions = dataContext.Transactions.Where(t => t.Account.Id == account.Id).OrderByDescending(t => t.TransactionTime).Take(25).ToList();
                 }
                     
                     //dataContext.Accounts.Where(a => a.User.UserName == User.Identity.Name);
